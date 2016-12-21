@@ -1,0 +1,30 @@
+class Cell
+types
+-- TODO Define types here
+	Position :: x:nat y:nat;
+values
+-- TODO Define values here
+instance variables
+	private position : Position;
+	private piece :  [Piece] := nil;
+-- TODO Define instance variables here
+operations
+	public Cell : nat * nat ==> Cell
+  	Cell(x,y) ==
+  	(
+  		position := mk_Position(x,y);
+		);
+		
+	public getPiece : () ==> Piece
+	getPiece() == 
+	(
+		return piece;
+	);
+		
+
+-- TODO Define operations here
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Cell

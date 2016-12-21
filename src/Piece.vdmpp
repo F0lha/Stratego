@@ -1,20 +1,14 @@
-class Stratego
+class Piece
 types
 -- TODO Define types here
 values
 -- TODO Define values here
 instance variables
 -- TODO Define instance variables here
-		private board : Board;
-		private turn : nat := 1;
-		
-		
-		-- Invariables
-		inv turn = 1 or turn = 0;
 operations
 -- TODO Define operations here
 functions
 -- TODO Define functiones here
 traces
 -- TODO Define Combinatorial Test Traces here
-end Stratego
+end Piece

@@ -1,12 +1,22 @@
 class Board
+
+-- Position is a pair of coordenates
 types
--- TODO Define types here
+		public Position:: x:nat  y:nat
 values
 -- TODO Define values here
 instance variables
+
+	private board : map seq of Position to Cell := {|->};
 -- TODO Define instance variables here
 operations
 -- TODO Define operations here
+
+  public validCoords : Position ==> bool
+  validCoords(position) ==
+  (
+  	return position.x < 9 and position.y < 9;
+  )
 functions
 -- TODO Define functiones here
 traces
