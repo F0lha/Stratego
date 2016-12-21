@@ -2,17 +2,25 @@ class Stratego
 types
 -- TODO Define types here
 values
--- TODO Define values here
+		-- TODO Define values here
+		public PIECES_PER_PLAYER : seq of nat1 = [6,1,1,2,3,4,4,4,5,8,1,1];
 instance variables
 -- TODO Define instance variables here
 		private board : Board;
-		private turn : nat := 1;
-		
+		private turn : nat := 0;
 		
 		-- Invariables
 		inv turn = 1 or turn = 0;
 operations
 -- TODO Define operations here
+
+		public Stratego : () ==> Stratego
+		Stratego() ==
+		(
+			board := new Board();
+		);
+		
+		
 functions
 -- TODO Define functiones here
 traces
