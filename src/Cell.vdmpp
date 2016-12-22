@@ -14,13 +14,19 @@ operations
   	Cell(x,y) ==
   	(
   		position := mk_Position(x,y);
-  		if isWater(position) then water := true;
+  		water := isWater(position);
 		);
 		
 	public getPiece : () ==> Piece
 	getPiece() == 
 	(
 		return piece;
+	);
+	
+	public setPiece : Piece ==> ()
+	setPiece(pie) == 
+	(
+		piece := pie;
 	);
 		
 	public isWater : Position ==> bool

@@ -9,7 +9,7 @@ values
 instance variables
 
 	private board : map Position to Cell := {|->};
-	private pieces : map  Piece to Position := {|->};
+	private pieces : map  Position to Piece := {|->};
 -- TODO Define instance variables here
 operations
 -- TODO Define operations here
@@ -30,7 +30,23 @@ operations
   validCoords(position) ==
   (
   	return position.x < max_coord and position.y < max_coord;
+  );
+  
+  public freeSpace : Position ==> bool
+  freeSpace(position) == 
+  (
+  	return board(Position).isWater();
   )
+  pre validCoords(position);
+  
+  public placePiece : nat*nat*PType*PColor ==> ()
+  placePiece(i,j,type,color) == 
+  (
+  	piece := new Piece(type,color);
+  	pieces := pieces ++ {mk_Position(i,j)|-> piece};
+  	board.position.setPiece(piece);
+  )
+  pre freeSpace(mk_Position(i,j));
 functions
 -- TODO Define functiones here
 traces

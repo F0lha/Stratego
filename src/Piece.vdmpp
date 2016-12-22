@@ -10,8 +10,7 @@ instance variables
 		private PieceType : PType;
 		private PieceColor : PColor;
 		
-		
-		inv PieceType < 12;
+		private onBoard : bool := false;
 operations
 -- TODO Define operations here
 		public Piece : PType*PColor ==> Piece
@@ -19,7 +18,16 @@ operations
   		(
   			PieceType := type;
   			PieceColor := color;
+  			self.placePiece();
   		)
+  		pre type <> nil and color <> nil;
+  	
+  	public placePiece : () ==> ()
+  		placePiece() ==
+  		(
+  			onBoard := true;
+  		)
+  		post self.onBoard = true;
 functions
 -- TODO Define functiones here
 traces
