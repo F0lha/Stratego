@@ -5,7 +5,7 @@ types
 values
 		-- TODO Define values here
 		public PIECES_PER_PLAYER : seq of nat1 = [6,1,1,2,3,4,4,4,5,8,1,1];
-		public TYPES_OF_PIECES : seq of Piece.PType = [ <BOMB> , <MARSHAL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
+		public TYPES_OF_PIECES : seq of Piece`PType = [ <BOMB> , <MARSHAL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
 instance variables
 -- TODO Define instance variables here
 		private board : Board;
@@ -20,30 +20,11 @@ operations
 		Stratego() ==
 		(
 			board := new Board();
-		);
+		)
+		post self.getTurn() = 0 or self.getTurn() = 1;
 		
-		-- TODO manual input
-		
-		public placePieces : () ==> ()
-		placePieces() ==
-		(
-			--Player 0
-			
-			x := 0;
-			y := 0;
-			
-			for i = 1 to len PIECES_PER_PLAYER by 1 do
-  		(
-  			for j = 0 to PIECES_PER_PLAYER(i) by 1 do
-  			(
-  				while not board.placePiece(x,y,TYPE_OF_PIECES(j),0) do
-  					if x = Board´max_coord 
-  					then x := 0 and y := y +1
-  					else  x:= x +1
-  			)
-  		)
-		);
-		
+		public pure getTurn : () ==> nat
+		getTurn() == return turn;
 		
 functions
 -- TODO Define functiones here

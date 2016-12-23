@@ -8,6 +8,7 @@ instance variables
 	private position : Position;
 	private piece :  [Piece] := nil;
 	private water : bool := false;
+	private occupied : bool := false;
 -- TODO Define instance variables here
 operations
 	public Cell : nat * nat ==> Cell
@@ -16,24 +17,40 @@ operations
   		position := mk_Position(x,y);
   		water := isWater(position);
 		);
-		
-	public getPiece : () ==> Piece
-	getPiece() == 
-	(
-		return piece;
-	);
 	
 	public setPiece : Piece ==> ()
 	setPiece(pie) == 
 	(
 		piece := pie;
-	);
-		
-	public isWater : Position ==> bool
-	isWater(position) ==
+		occupied := true;
+	)
+	pre occupied = false and water = false
+	post occupied = true;
+	
+	public removePiece : () ==> ()
+	removePiece() == 
 	(
-		return (position.x = 2 or position.x = 3 or position.x = 6 or position.x = 7) and (position.y = 4 or position.y = 5);
+		piece := nil;
+		occupied := false;
+	)
+	pre occupied = true and water = false
+	post occupied = false;
+	
+	public pure isOccupied : () ==> bool
+	isOccupied() == return occupied;
+	
+	public pure getPiece : () ==> Piece
+	getPiece() == return piece;
+		
+	public pure isWater : Position ==> bool
+	isWater(pos) ==
+	(
+		return (pos.x = 2 or pos.x = 3 or pos.x = 6 or pos.x = 7) and (pos.y = 4 or pos.y = 5);
 	);
+	
+	public pure getWater : () ==> bool
+	getWater() == return water;
+	
 -- TODO Define operations here
 functions
 -- TODO Define functiones here

@@ -1,0 +1,71 @@
+\begin{vdmpp}[breaklines=true]
+class Board
+
+-- Position is a pair of coordenates
+types
+  public Position:: x:nat  y:nat
+values
+-- TODO Define values here
+  private max_coord : nat = 9;
+instance variables
+
+ private board : map Position to Cell := {|->};
+ private pieces : map  Position to Piece := {|->};
+-- TODO Define instance variables here
+operations
+(*@
+\label{validCoords:15}
+@*)
+-- TODO Define operations here
+(*@
+\label{Board:16}
+@*)
+(*@
+\label{Cell:16}
+@*)
+
+  public Board : () ==> Board
+   Board() ==
+   (
+    for i = 0 to max_coord by 1 do
+    (
+     for j = 0 to max_coord by 1 do
+     (
+       board := board ++ {mk_Position(i,j)|-> new Cell(i,j)};
+     )
+    )
+  );
+
+  public pure validCoords : Position ==> bool
+  validCoords(position) ==
+  (
+   return position.x < max_coord and position.y < max_coord;
+  );
+  
+(*@
+\label{freeSpace:35}
+@*)
+  public pure freeSpace : Position ==> bool
+  freeSpace(position) == 
+  (
+   return board(position).isOccupied();
+  )
+  pre validCoords(position);
+  
+(*@
+\label{placePiece:42}
+@*)
+  public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
+  placePiece(i,j,type,color) == 
+  (
+   dcl piece : Piece := new Piece(type,color);
+   pieces := pieces ++ {mk_Position(i,j)|-> piece};
+   board(mk_Position(i,j)).setPiece(piece);
+  )
+  pre freeSpace(mk_Position(i,j));
+functions
+-- TODO Define functiones here
+traces
+-- TODO Define Combinatorial Test Traces here
+end Board
+\end{vdmpp}
