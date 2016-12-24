@@ -47,8 +47,23 @@ operations
   	board(mk_Position(i,j)).setPiece(piece);
   )
   pre freeSpace(mk_Position(i,j));
+  
+  
+  
+  public movePiece : Position*Position*Piece`PColor ==> ()
+  movePiece(origin,destination,color) == 
+  (
+  	dcl pieceOrigin : Piece := board(origin).getPiece();
+  	dcl pieceDestination : Piece := board(destination).getPiece();
+  	dcl interaction : bool := getInteraction(pieceOrigin,pieceDestination);
+  	board(origin).removePiece();
+  );
+  
 functions
 -- TODO Define functiones here
+	public getInteraction : Piece * Piece -> bool
+	getInteraction(origin,destination) == true;
+	
 traces
 -- TODO Define Combinatorial Test Traces here
 end Board

@@ -21,10 +21,21 @@ operations
 		(
 			board := new Board();
 		)
-		post self.getTurn() = 0 or self.getTurn() = 1;
+		post self.validTurn();
 		
 		public pure getTurn : () ==> nat
 		getTurn() == return turn;
+		
+		public changeTurn : () ==> ()
+		changeTurn() == 
+		(
+		if turn = 0 then turn := 1 else turn := 0;
+		)
+		pre self.validTurn()
+		post self.validTurn();
+		
+		public pure validTurn : () ==> bool
+		validTurn() == return turn = 0 or turn = 1;
 		
 functions
 -- TODO Define functiones here

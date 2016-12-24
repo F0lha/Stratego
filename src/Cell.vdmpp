@@ -10,6 +10,9 @@ instance variables
 	private water : bool := false;
 	private occupied : bool := false;
 -- TODO Define instance variables here
+
+	inv occupied => piece <> nil;
+	inv water => piece = nil and occupied = false;
 operations
 	public Cell : nat * nat ==> Cell
   	Cell(x,y) ==
@@ -24,8 +27,8 @@ operations
 		piece := pie;
 		occupied := true;
 	)
-	pre occupied = false and water = false
-	post occupied = true;
+	pre occupied = false and piece = nil and water = false
+	post occupied = true and piece <> nil;
 	
 	public removePiece : () ==> ()
 	removePiece() == 
@@ -33,8 +36,8 @@ operations
 		piece := nil;
 		occupied := false;
 	)
-	pre occupied = true and water = false
-	post occupied = false;
+	pre occupied = true and piece <> nil and water = false
+	post occupied = false and piece = nil;
 	
 	public pure isOccupied : () ==> bool
 	isOccupied() == return occupied;

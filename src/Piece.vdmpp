@@ -11,6 +11,7 @@ instance variables
 		private PieceColor : PColor;
 		
 		private onBoard : bool := false;
+		private cannotMove : bool;
 operations
 -- TODO Define operations here
 		public Piece : PType*PColor ==> Piece
@@ -18,6 +19,9 @@ operations
   		(
   			PieceType := type;
   			PieceColor := color;
+  			
+  			cannotMove := PieceType = <BOMB> or PieceType = <FLAG>;
+  			
   			self.placePiece();
   		)
   		pre type <> nil and color <> nil;
