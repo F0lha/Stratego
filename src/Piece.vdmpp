@@ -32,6 +32,9 @@ operations
   			onBoard := true;
   		)
   		post self.onBoard = true;
+  		
+  		public pure getType : () ==> PType
+  		getType() == return PieceType;
 functions
 -- TODO Define functiones here
 traces

@@ -2,7 +2,8 @@ class Board
 
 -- Position is a pair of coordenates
 types
-		public Position:: x:nat  y:nat
+		public Position:: x:nat  y:nat;
+		public PType = <BOMB> | <MARSHAL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
 values
 -- TODO Define values here
 		private max_coord : nat = 9;
@@ -59,10 +60,31 @@ operations
   	board(origin).removePiece();
   );
   
+	--true is eats the other piece, false if the other piece its
+  public getInteraction : Piece * Piece ==> bool
+	getInteraction(origin,destination) == (
+		dcl originType : PType := origin.getType();
+		dcl destinationType : PType := destination.getType();
+		cases origin.getType() :
+		<FLAG> -> return true,
+		others -> return if originType <> destinationType then strongerPiece(originType,destinationType) else strongerPiece(originType,destinationType)
+		end
+	);
+  
 functions
 -- TODO Define functiones here
-	public getInteraction : Piece * Piece -> bool
-	getInteraction(origin,destination) == true;
+	public getIndex : PType -> nat
+	getIndex(type) ==
+	(
+		iota i in set inds Stratego`TYPES_OF_PIECES & Stratego`TYPES_OF_PIECES(i) = type
+	);
+	
+	public strongerPiece : PType*PType -> bool
+	strongerPiece(originType,destinationType) == (
+		 getIndex(originType) > getIndex(destinationType)
+	);
+	
+
 	
 traces
 -- TODO Define Combinatorial Test Traces here
