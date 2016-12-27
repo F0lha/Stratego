@@ -35,6 +35,9 @@ operations
   		
   		public pure getType : () ==> PType
   		getType() == return PieceType;
+  		
+  		public pure getColor : () ==> PColor
+  		getColor() == return PieceColor;
 functions
 -- TODO Define functiones here
 traces

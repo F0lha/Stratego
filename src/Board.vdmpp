@@ -51,28 +51,40 @@ operations
   
   
   
-  public movePiece : Position*Position*Piece`PColor ==> ()
-  movePiece(origin,destination,color) == 
+  public moveSpaces : Position*Position*Piece`PColor ==> bool
+  moveSpaces(origin,destination,color) == 
   (
-  	dcl pieceOrigin : Piece := board(origin).getPiece();
-  	dcl pieceDestination : Piece := board(destination).getPiece();
-  	dcl interaction : bool := getInteraction(pieceOrigin,pieceDestination);
-  	board(origin).removePiece();
+  	dcl pieceOrigin : [Piece] := board(origin).getPiece();
+  	dcl pieceDestination : [Piece] := board(destination).getPiece();
+  	
+  	return movePieces(pieceOrigin,pieceDestination);
   );
   
-	--true is eats the other piece, false if the other piece its
+  public movePieces : [Piece]*[Piece] ==> bool
+  movePieces(pieceOrigin,pieceDestination) == 
+  (
+  		dcl interaction : bool := getInteraction(pieceOrigin,pieceDestination);
+  		return true;
+  )
+  pre (pieceOrigin = nil or pieceDestination = nil) and pieceOrigin.getColor() <> pieceDestination.getColor();
+  	
+  
+	--true if it eats the second piece, false if the second piece its stronger
   public getInteraction : Piece * Piece ==> bool
 	getInteraction(origin,destination) == (
 		dcl originType : PType := origin.getType();
 		dcl destinationType : PType := destination.getType();
-		cases origin.getType() :
-		<FLAG> -> return true,
-		others -> return if originType <> destinationType then strongerPiece(originType,destinationType) else strongerPiece(originType,destinationType)
+		cases originType :
+		<MINER> -> return destinationType = <BOMB>,
+		<SPY> -> return destinationType = <MARSHAL>,
+		others -> strongerPiece(originType,destinationType)
 		end
 	);
   
 functions
 -- TODO Define functiones here
+
+	--get index of type of piece
 	public getIndex : PType -> nat
 	getIndex(type) ==
 	(
