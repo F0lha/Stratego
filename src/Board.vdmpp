@@ -40,6 +40,9 @@ operations
   )
   pre validCoords(position);
   
+  public pure hasPiece : Position ==> bool
+  hasPiece(position) == return position in set dom pieces;
+  
   public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
   placePiece(i,j,type,color) == 
   (
@@ -50,15 +53,20 @@ operations
   pre freeSpace(mk_Position(i,j));
   
   
-  
-  public moveSpaces : Position*Position*Piece`PColor ==> bool
-  moveSpaces(origin,destination,color) == 
+  -- responsible for making a move
+  public makeMove : Position*Position*Piece`PColor ==> bool
+  makeMove(origin,destination,color) == 
   (
   	dcl pieceOrigin : [Piece] := board(origin).getPiece();
   	dcl pieceDestination : [Piece] := board(destination).getPiece();
   	
-  	return movePieces(pieceOrigin,pieceDestination);
-  );
+  	if movePossible(origin,destination,pieceOrigin.hasUnlimitedRange())
+  		then
+		  	if movePieces(pieceOrigin,pieceDestination) 
+		  	then movePieces(pieceOrigin,pieceDestination) 
+	  		else	return false
+	  	else return false;
+  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin);
   
   public movePieces : [Piece]*[Piece] ==> bool
   movePieces(pieceOrigin,pieceDestination) == 
@@ -66,11 +74,11 @@ operations
   		dcl interaction : bool := getInteraction(pieceOrigin,pieceDestination);
   		return true;
   )
-  pre (pieceOrigin = nil or pieceDestination = nil) and pieceOrigin.getColor() <> pieceDestination.getColor();
+  pre (pieceOrigin = nil or pieceDestination = nil) and pieceOrigin.getColor() <> pieceDestination.getColor() and pieceOrigin.canMove();
   	
   
 	--true if it eats the second piece, false if the second piece its stronger
-  public getInteraction : Piece * Piece ==> bool
+  public pure getInteraction : Piece * Piece ==> bool
 	getInteraction(origin,destination) == (
 		dcl originType : PType := origin.getType();
 		dcl destinationType : PType := destination.getType();
@@ -80,10 +88,25 @@ operations
 		others -> strongerPiece(originType,destinationType)
 		end
 	);
+	
+	
+	public pure movePossible : Position*Position*bool ==> bool
+	movePossible(origin,destination,range) == 
+	(
+		if range
+			then return isFreeLane(origin,destination)
+			else if origin.x = destination.x
+				then return abs(origin.y - destination.y) = 1
+				else return abs(origin.x - destination.x) = 1;
+	) 
+	pre origin.x = destination.x or origin.y =destination.y;
+	
+	--TODO todo
+	public pure isFreeLane : Position*Position ==> bool
+	isFreeLane(origin,destination) == return true;
   
 functions
 -- TODO Define functiones here
-
 	--get index of type of piece
 	public getIndex : PType -> nat
 	getIndex(type) ==
@@ -95,7 +118,6 @@ functions
 	strongerPiece(originType,destinationType) == (
 		 getIndex(originType) > getIndex(destinationType)
 	);
-	
 
 	
 traces

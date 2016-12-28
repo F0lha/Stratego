@@ -12,6 +12,7 @@ instance variables
 		
 		private onBoard : bool := false;
 		private cannotMove : bool;
+		private unlimitedRange : bool;
 operations
 -- TODO Define operations here
 		public Piece : PType*PColor ==> Piece
@@ -21,6 +22,7 @@ operations
   			PieceColor := color;
   			
   			cannotMove := PieceType = <BOMB> or PieceType = <FLAG>;
+  			unlimitedRange := PieceType = <SCOUT>;
   			
   			self.placePiece();
   		)
@@ -38,6 +40,12 @@ operations
   		
   		public pure getColor : () ==> PColor
   		getColor() == return PieceColor;
+  		
+  		public pure canMove : () ==> bool
+  		canMove() == return not cannotMove;
+  		
+  		public pure hasUnlimitedRange : () ==> bool
+  		hasUnlimitedRange() == return unlimitedRange;
 functions
 -- TODO Define functiones here
 traces
