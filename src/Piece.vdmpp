@@ -1,7 +1,7 @@
 class Piece
 types
 -- TODO Define types here
-  	public PType = <BOMB> | <MARSHAL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
+  	public PType = <BOMB> | <MARSHALL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
 		public PColor = <RED> | <BLUE>;
 values
 	-- TODO Define values here

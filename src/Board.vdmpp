@@ -3,7 +3,7 @@ class Board
 -- Position is a pair of coordenates
 types
 		public Position:: x:nat  y:nat;
-		public PType = <BOMB> | <MARSHAL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
+		public PType = <BOMB> | <MARSHALL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
 values
 -- TODO Define values here
 		private max_coord : nat = 9;
@@ -99,8 +99,13 @@ operations
 		dcl originType : PType := origin.getType();
 		dcl destinationType : PType := destination.getType();
 		cases originType :
+<<<<<<< HEAD
 		<MINER> -> if destinationType = <BOMB> then return true else strongerPiece(originType,destinationType),
 		<SPY> -> if destinationType = <MARSHAL> then return true else strongerPiece(originType,destinationType),
+=======
+		<MINER> -> return destinationType = <BOMB>,
+		<SPY> -> return destinationType = <MARSHALL>,
+>>>>>>> 89f6224c36151b9c3a39b5105efc3978ee5ea255
 		others -> strongerPiece(originType,destinationType)
 		end
 	);
