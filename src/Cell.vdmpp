@@ -42,7 +42,7 @@ operations
 	public pure isOccupied : () ==> bool
 	isOccupied() == return occupied;
 	
-	public pure getPiece : () ==> Piece
+	public pure getPiece : () ==> [Piece]
 	getPiece() == return piece;
 		
 	public pure isWater : Position ==> bool
