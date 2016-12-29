@@ -5,7 +5,7 @@ types
 values
 		-- TODO Define values here
 		public PIECES_PER_PLAYER : seq of nat1 = [6,1,1,2,3,4,4,4,5,8,1,1];
-		public TYPES_OF_PIECES : seq of Piece`PType = [ <BOMB> , <MARSHAL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
+		public TYPES_OF_PIECES : seq of Piece`PType = [ <BOMB> , <MARSHALL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
 instance variables
 -- TODO Define instance variables here
 		private board : Board;
