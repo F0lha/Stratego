@@ -10,7 +10,6 @@ values
 instance variables
 
 	private board : map Position to Cell := {|->};
-	private pieces : map  Position to Piece := {|->};
 -- TODO Define instance variables here
 operations
 -- TODO Define operations here
@@ -30,13 +29,13 @@ operations
   public pure validCoords : Position ==> bool
   validCoords(position) ==
   (
-  	return position.x < max_coord and position.y < max_coord;
+  	return position.x <= max_coord and position.y <= max_coord;
   );
   
   public pure freeSpace : Position ==> bool
   freeSpace(position) == 
   (
-  	return board(position).isOccupied();
+  	return not board(position).isOccupied();
   )
   pre validCoords(position);
   
@@ -47,7 +46,6 @@ operations
   placePiece(i,j,type,color) == 
   (
   	dcl piece : Piece := new Piece(type,color);
-  	pieces := pieces ++ {mk_Position(i,j)|-> piece};
   	board(mk_Position(i,j)).setPiece(piece);
   )
   pre freeSpace(mk_Position(i,j));
@@ -99,13 +97,8 @@ operations
 		dcl originType : PType := origin.getType();
 		dcl destinationType : PType := destination.getType();
 		cases originType :
-<<<<<<< HEAD
-		<MINER> -> if destinationType = <BOMB> then return true else strongerPiece(originType,destinationType),
-		<SPY> -> if destinationType = <MARSHAL> then return true else strongerPiece(originType,destinationType),
-=======
 		<MINER> -> return destinationType = <BOMB>,
 		<SPY> -> return destinationType = <MARSHALL>,
->>>>>>> 89f6224c36151b9c3a39b5105efc3978ee5ea255
 		others -> strongerPiece(originType,destinationType)
 		end
 	);

@@ -40,7 +40,7 @@ operations
 	post occupied = false and piece = nil;
 	
 	public pure isOccupied : () ==> bool
-	isOccupied() == return occupied;
+	isOccupied() == return occupied or water;
 	
 	public pure getPiece : () ==> [Piece]
 	getPiece() == return piece;
