@@ -24,8 +24,10 @@ operations
 	public setPiece : Piece ==> ()
 	setPiece(pie) == 
 	(
-		piece := pie;
-		occupied := true;
+		atomic(
+			piece := pie;
+			occupied := true;
+			)
 	)
 	pre occupied = false and piece = nil and water = false
 	post occupied = true and piece <> nil;

@@ -48,7 +48,7 @@ operations
   	dcl piece : Piece := new Piece(type,color);
   	board(mk_Position(i,j)).setPiece(piece);
   )
-  pre freeSpace(mk_Position(i,j));
+  pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color);
   
   
   -- responsible for making a move
@@ -143,6 +143,10 @@ functions
 	strongerPiece(originType,destinationType) == (
 		 getIndex(originType) > getIndex(destinationType)
 	);
+	
+	public colorRegion : Position*Piece`PColor -> bool
+	colorRegion(position, color) ==
+		if color = <BLUE> then position.y < 4 else position.y > 5;
 
 	
 traces
