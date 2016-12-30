@@ -36,7 +36,7 @@ class BoardTest is subclass of TestCase
                 private placePiece: () ==> ()
                 placePiece() ==
                 (
-                				s.placePiece(0,0,<CAPTAIN>,<BLUE>);
+                				s.placePiece(0,0,<BOMB>,<BLUE>);
                 				
                 				s.placePiece(4,5,<BOMB>,<BLUE>);
                 				
@@ -61,13 +61,6 @@ class BoardTest is subclass of TestCase
                 		assertEqual(true,s.movePossible(mk_Board`Position(1,0),mk_Board`Position(9,0),true));
                 );
                 
-                private makeMove: () ==> ()
-                 makeMove() ==
-                (
-                		assertEqual(true,s.makeMove(mk_Board`Position(0,0),mk_Board`Position(1,0),<BLUE>));
-          
-                );
-                
                 
                 public static main: () ==> ()
                 main() ==
@@ -78,6 +71,5 @@ class BoardTest is subclass of TestCase
                         test.testHasPiece();
                         test.placePiece();
                         test.possibleMove();
-                        test.makeMove();
                 );
 end BoardTest
