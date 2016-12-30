@@ -3,7 +3,6 @@ class Board
 -- Position is a pair of coordenates
 types
 		public Position:: x:nat  y:nat;
-		public PType = <BOMB> | <MARSHALL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
 values
 -- TODO Define values here
 		private max_coord : nat = 9;
@@ -48,7 +47,7 @@ operations
   	dcl piece : Piece := new Piece(type,color);
   	board(mk_Position(i,j)).setPiece(piece);
   )
-  pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color);
+  pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color) and limitPieces(type,color);
   
   
   -- responsible for making a move
@@ -94,8 +93,8 @@ operations
 	--true if it eats the second piece, false if the second piece its stronger
   public pure getInteraction : Piece * Piece ==> bool
 	getInteraction(origin,destination) == (
-		dcl originType : PType := origin.getType();
-		dcl destinationType : PType := destination.getType();
+		dcl originType : Piece`PType := origin.getType();
+		dcl destinationType : Piece`PType := destination.getType();
 		cases originType :
 		<MINER> -> return destinationType = <BOMB>,
 		<SPY> -> return destinationType = <MARSHALL>,
@@ -103,6 +102,20 @@ operations
 		end
 	);
 	
+	public pure limitPieces : Piece`PType*Piece`PColor ==> bool
+	limitPieces(type,color) == 
+	(
+		dcl pieces : nat := 0;
+		dcl index : nat := getIndex(type);
+		
+		for all cell in set rng board do 
+			(if cell.getPiece() <> nil 
+				then 
+					(if (cell.getPiece().getType() = type and cell.getPiece().getColor() = color) 
+						then pieces := pieces + 1));
+		
+		return pieces < Stratego`PIECES_PER_PLAYER(index);
+	);
 	
 	public pure movePossible : Position*Position*bool ==> bool
 	movePossible(origin,destination,range) == 
@@ -133,13 +146,13 @@ operations
 functions
 -- TODO Define functiones here
 	--get index of type of piece
-	public getIndex : PType -> nat
+	public getIndex : Piece`PType -> nat
 	getIndex(type) ==
 	(
 		[i | i in set inds Stratego`TYPES_OF_PIECES & Stratego`TYPES_OF_PIECES(i) = type](1)
 	);
 	
-	public strongerPiece : PType*PType -> bool
+	public strongerPiece : Piece`PType*Piece`PType -> bool
 	strongerPiece(originType,destinationType) == (
 		 getIndex(originType) > getIndex(destinationType)
 	);

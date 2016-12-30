@@ -2,6 +2,8 @@ class BoardTest is subclass of TestCase
         instance variables
                 s : Board := new Board();
         operations          
+        
+        				-- Tests with valid Inputs
                 private testValidCoords: () ==> ()
                 testValidCoords() ==
                 (
@@ -26,29 +28,33 @@ class BoardTest is subclass of TestCase
                         --TODO pecas
                 );
                 
-                private testHasPiece: () ==> ()
-                testHasPiece() ==
-                (
-                assertEqual(false,s.hasPiece(mk_Board`Position(0,0)));
-               
-                );
-                
                 private placePiece: () ==> ()
                 placePiece() ==
                 (
                 				s.placePiece(0,0,<CAPTAIN>,<BLUE>);
                 				
-                				s.placePiece(4,5,<BOMB>,<BLUE>);
+                				s.placePiece(0,2,<BOMB>,<BLUE>);
+                				s.placePiece(1,2,<BOMB>,<BLUE>);
+                				s.placePiece(2,2,<BOMB>,<BLUE>);
+                				s.placePiece(3,2,<BOMB>,<BLUE>);
+                				s.placePiece(4,2,<BOMB>,<BLUE>);
+                				s.placePiece(5,2,<BOMB>,<BLUE>);
                 				
+                				-- Works because is the other player
+                				s.placePiece(5,9,<BOMB>,<RED>);
                 				
-                        
-                        assertEqual(false,s.freeSpace(mk_Board`Position(2,5)));
-                        
-                        assertEqual(false,s.freeSpace(mk_Board`Position(3,4)));
-                        
-                        assertEqual(true,s.freeSpace(mk_Board`Position(9,9)));
+                				s.placePiece(0,3,<MARSHALL>,<BLUE>);
+                				
+                				s.placePiece(0,6,<SCOUT>,<RED>);
                         
                         --TODO pecas
+                );
+                
+                private testHasPiece: () ==> ()
+                testHasPiece() ==
+                (
+                	assertEqual(false,s.hasPiece(mk_Board`Position(0,0)));
+               
                 );
                 
                   private possibleMove: () ==> ()
@@ -68,6 +74,17 @@ class BoardTest is subclass of TestCase
           
                 );
                 
+                
+                -- Invalid Inputs, Pre Condition Failing
+                
+                private placePieceOnWater : () ==> ()
+                placePieceOnWater() == s.placePiece(4,5,<BOMB>,<BLUE>);
+                
+                private placePieceOutOfRegion : () ==> ()
+                placePieceOutOfRegion() == s.placePiece(9,9,<BOMB>,<BLUE>);
+                
+                private excessiveTypePieces : () ==> ()
+                excessiveTypePieces() == s.placePiece(6,2,<BOMB>,<BLUE>);
                 
                 public static main: () ==> ()
                 main() ==
