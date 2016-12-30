@@ -47,7 +47,8 @@ operations
   	dcl piece : Piece := new Piece(type,color);
   	board(mk_Position(i,j)).setPiece(piece);
   )
-  pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color) and limitPieces(type,color);
+  pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color) and limitPieces(type,color)
+  post hasPiece(mk_Position(i,j));
   
   
   -- responsible for making a move
@@ -66,29 +67,33 @@ operations
 	  				board(destination).setPiece(pieceOrigin);
 	  				return true;
 	  			)
-	  			else ( 
-	  				if pieceOrigin.getType() = pieceDestination.getType()
-	  					then (
-	  						board(origin).removePiece();
-	  						board(destination).removePiece();
-	  						return true;
-	  					)
-	  					else (
-	  					 if getInteraction(pieceOrigin,pieceDestination)
-			  				then (
+	  			else (
+	  				if  pieceOrigin.getColor() = pieceDestination.getColor() 
+	  					then return false
+	  				else (
+		  				if pieceOrigin.getType() = pieceDestination.getType()
+		  					then (
 		  						board(origin).removePiece();
-		  						board(destination).setPiece(pieceOrigin);
+		  						board(destination).removePiece();
 		  						return true;
 		  					)
 		  					else (
-		  						board(origin).removePiece();
-		  						return true;
-		  					)
-		  				)
-	  			)
+		  					 if getInteraction(pieceOrigin,pieceDestination)
+				  				then (
+			  						board(origin).removePiece();
+			  						board(destination).setPiece(pieceOrigin);
+			  						return true;
+			  					)
+			  					else (
+			  						board(origin).removePiece();
+			  						return true;
+			  					)
+			  				)
+		  			)
+		  		)
   	);
   	return false;
-  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color;
+  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove();
   
 	--true if it eats the second piece, false if the second piece its stronger
   public pure getInteraction : Piece * Piece ==> bool
@@ -135,10 +140,10 @@ operations
 		if origin.x = destination.x 
 			then
 				for i = origin.y to destination.y by (if origin.y >= destination.y then -1 else 1) do
-					(if i <> destination.y then if board(mk_Position(destination.x,i)).isOccupied() then return false;)
+					(if (i <> destination.y and i <> origin.y) then if board(mk_Position(destination.x,i)).isOccupied() then return false;)
 			else 
 				for i = origin.x to destination.x by (if origin.x >= destination.x then -1 else 1) do
-					(if i <> destination.y then if board(mk_Position(i,destination.y)).isOccupied() then return false;);
+					(if (i <> destination.x and i <> origin.x) then if board(mk_Position(i,destination.y)).isOccupied() then return false;);
 					
 			return true;
 	);

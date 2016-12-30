@@ -75,8 +75,8 @@ class BoardTest is subclass of TestCase
                  makeMove() ==
                 (
                 		assertEqual(true,s.makeMove(mk_Board`Position(0,0),mk_Board`Position(1,0),<BLUE>));
-                		assertEqual(false,s.makeMove(mk_Board`Position(0,6),mk_Board`Position(0,7),<RED>));
-                		assertEqual(false,s.makeMove(mk_Board`Position(6,1),mk_Board`Position(6,2),<BLUE>));
+                		assertEqual(true,s.makeMove(mk_Board`Position(0,6),mk_Board`Position(0,7),<RED>));
+                		assertEqual(true,s.makeMove(mk_Board`Position(6,1),mk_Board`Position(6,2),<BLUE>));
                     
                 );
                 
