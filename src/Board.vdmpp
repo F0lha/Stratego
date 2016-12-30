@@ -93,7 +93,8 @@ operations
 		  		)
   	);
   	return false;
-  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove();
+  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove()
+  post not hasPiece(origin);
   
 	--true if it eats the second piece, false if the second piece its stronger
   public pure getInteraction : Piece * Piece ==> bool
