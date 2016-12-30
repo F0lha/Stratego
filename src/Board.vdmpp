@@ -61,7 +61,7 @@ operations
   	
   	if movePossible(origin,destination,pieceOrigin.hasUnlimitedRange())
   	then (
-	  	if pieceDestination <> nil --move Piece
+	  	if pieceDestination = nil --move Piece
 	  		then (
 	  				board(origin).removePiece();
 	  				board(destination).setPiece(pieceOrigin);

@@ -33,8 +33,10 @@ operations
 	public removePiece : () ==> ()
 	removePiece() == 
 	(
-		piece := nil;
-		occupied := false;
+		atomic(
+			piece := nil;
+			occupied := false;
+		)
 	)
 	pre occupied = true and piece <> nil and water = false
 	post occupied = false and piece = nil;
