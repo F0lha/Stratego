@@ -41,6 +41,9 @@ operations
   public pure hasPiece : Position ==> bool
   hasPiece(position) == return board(position).getPiece() <> nil;
   
+  public pure getPiece : Position ==> [Piece]
+  getPiece(position) == return board(position).getPiece();
+  
   public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
   placePiece(i,j,type,color) == 
   (
@@ -81,6 +84,7 @@ operations
 		  					 if getInteraction(pieceOrigin,pieceDestination)
 				  				then (
 			  						board(origin).removePiece();
+			  						board(destination).removePiece();
 			  						board(destination).setPiece(pieceOrigin);
 			  						return true;
 			  					)
@@ -91,10 +95,8 @@ operations
 			  				)
 		  			)
 		  		)
-  	);
-  	return false;
-  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove()
-  post not hasPiece(origin);
+  	)else return false;
+  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove();
   
 	--true if it eats the second piece, false if the second piece its stronger
   public pure getInteraction : Piece * Piece ==> bool
@@ -160,7 +162,7 @@ functions
 	
 	public strongerPiece : Piece`PType*Piece`PType -> bool
 	strongerPiece(originType,destinationType) == (
-		 getIndex(originType) > getIndex(destinationType)
+		 getIndex(originType) < getIndex(destinationType)
 	);
 	
 	public colorRegion : Position*Piece`PColor -> bool
