@@ -33,16 +33,17 @@ class BoardTest is subclass of TestCase
                 (
                 				s.placePiece(0,0,<CAPTAIN>,<BLUE>);
                 				
+                				-- six bombs, maximum
                 				s.placePiece(0,2,<BOMB>,<BLUE>);
                 				s.placePiece(1,2,<BOMB>,<BLUE>);
                 				s.placePiece(2,2,<BOMB>,<BLUE>);
                 				s.placePiece(3,2,<BOMB>,<BLUE>);
                 				s.placePiece(4,2,<BOMB>,<BLUE>);
+                				s.placePiece(1,3,<BOMB>,<BLUE>);
                 				
                 				-- Works because is the other player
                 				s.placePiece(5,9,<BOMB>,<RED>);
                 				
-                				s.placePiece(1,3,<BOMB>,<BLUE>);
           
                 				s.placePiece(6,1,<SCOUT>,<BLUE>);
                 				s.placePiece(6,2,<SCOUT>,<BLUE>);
@@ -149,8 +150,11 @@ class BoardTest is subclass of TestCase
                 		assertEqual(<RED>, s.getPiece(mk_Board`Position(4,3)).getColor());
                 );
                 
+                private checkIfIsWater : () ==> ()
+                checkIfIsWater() == s.placePiece(4,5,<BOMB>,<BLUE>);
                 
-                -- Invalid Inputs, Pre Condition Failing
+                
+                -- Invalid Inputs, Pre Condition Failing, one at a time
                 
                 private placePieceOnWater : () ==> ()
                 placePieceOnWater() == s.placePiece(4,5,<BOMB>,<BLUE>);
@@ -159,7 +163,17 @@ class BoardTest is subclass of TestCase
                 placePieceOutOfRegion() == s.placePiece(9,9,<BOMB>,<BLUE>);
                 
                 private excessiveTypePieces : () ==> ()
-                excessiveTypePieces() == s.placePiece(6,2,<BOMB>,<BLUE>);
+                excessiveTypePieces() == (
+              		-- six bombs, maximum
+               	s.placePiece(0,2,<BOMB>,<BLUE>);
+               	s.placePiece(1,2,<BOMB>,<BLUE>);
+               	s.placePiece(2,2,<BOMB>,<BLUE>);
+               	s.placePiece(3,2,<BOMB>,<BLUE>);
+               	s.placePiece(4,2,<BOMB>,<BLUE>);
+         				s.placePiece(1,3,<BOMB>,<BLUE>);
+                
+                s.placePiece(6,2,<BOMB>,<BLUE>);
+                );
                 
                 public static main: () ==> ()
                 main() ==

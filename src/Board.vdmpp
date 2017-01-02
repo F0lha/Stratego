@@ -34,15 +34,30 @@ operations
   public pure freeSpace : Position ==> bool
   freeSpace(position) == 
   (
-  	return not board(position).isOccupied();
+  	return not getCell(position).isOccupied();
   )
   pre validCoords(position);
   
   public pure hasPiece : Position ==> bool
-  hasPiece(position) == return board(position).getPiece() <> nil;
+  hasPiece(position) == 
+  (
+  return getPiece(position) <> nil
+  )
+	pre validCoords(position);
+  
+  public pure getCell : Position ==> [Cell]
+  getCell(position) == 
+  (
+  return board(position)
+  )
+  pre validCoords(position);
   
   public pure getPiece : Position ==> [Piece]
-  getPiece(position) == return board(position).getPiece();
+  getPiece(position) == 
+  (
+  return getCell(position).getPiece()
+  )
+  pre validCoords(position);
   
   public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
   placePiece(i,j,type,color) == 
@@ -58,8 +73,8 @@ operations
   public makeMove : Position*Position*Piece`PColor ==> bool
   makeMove(origin,destination,color) == 
   (
-  	dcl pieceOrigin : [Piece] := board(origin).getPiece();
-  	dcl pieceDestination : [Piece] := board(destination).getPiece();
+  	dcl pieceOrigin : [Piece] := getPiece(origin);
+  	dcl pieceDestination : [Piece] := getPiece(destination);
   	
   	
   	if movePossible(origin,destination,pieceOrigin.hasUnlimitedRange())
@@ -96,7 +111,7 @@ operations
 		  			)
 		  		)
   	)else return false;
-  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and board(origin).getPiece().getColor() = color and board(origin).getPiece().canMove();
+  )pre validCoords(origin) and validCoords(destination) and hasPiece(origin) and getPiece(origin).getColor() = color and getPiece(origin).canMove();
   
 	--true if it eats the second piece, false if the second piece its stronger
   public pure getInteraction : Piece * Piece ==> bool
@@ -136,20 +151,20 @@ operations
 	) 
 	pre origin.x = destination.x or origin.y =destination.y;
 	
-	--TODO todo
+	
 	public pure isFreeLane : Position*Position ==> bool
 	isFreeLane(origin,destination) == 
 	(
 		if origin.x = destination.x 
 			then
 				for i = origin.y to destination.y by (if origin.y >= destination.y then -1 else 1) do
-					(if (i <> destination.y and i <> origin.y) then if board(mk_Position(destination.x,i)).isOccupied() then return false;)
+					(if (i <> destination.y and i <> origin.y) then if getCell(mk_Position(destination.x,i)).isOccupied() then return false;)
 			else 
 				for i = origin.x to destination.x by (if origin.x >= destination.x then -1 else 1) do
-					(if (i <> destination.x and i <> origin.x) then if board(mk_Position(i,destination.y)).isOccupied() then return false;);
+					(if (i <> destination.x and i <> origin.x) then if getCell(mk_Position(i,destination.y)).isOccupied() then return false;);
 					
 			return true;
-	);
+	)pre validCoords(origin) and validCoords(destination);
   
 functions
 -- TODO Define functiones here

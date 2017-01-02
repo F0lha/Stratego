@@ -11,7 +11,7 @@ instance variables
 	private occupied : bool := false;
 -- TODO Define instance variables here
 
-	inv occupied => piece <> nil;
+	inv occupied <=> piece <> nil;
 	inv water => piece = nil and occupied = false;
 operations
 	public Cell : nat * nat ==> Cell
@@ -54,9 +54,6 @@ operations
 	(
 		return (pos.x = 2 or pos.x = 3 or pos.x = 6 or pos.x = 7) and (pos.y = 4 or pos.y = 5);
 	);
-	
-	public pure getWater : () ==> bool
-	getWater() == return water;
 	
 -- TODO Define operations here
 functions
