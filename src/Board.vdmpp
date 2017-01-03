@@ -129,7 +129,6 @@ operations
 	limitPieces(type,color) == 
 	(
 		dcl pieces : nat := 0;
-		dcl index : nat := getIndex(type);
 		
 		for all cell in set rng board do 
 			(if cell.getPiece() <> nil 
@@ -137,8 +136,8 @@ operations
 					(if (cell.getPiece().getType() = type and cell.getPiece().getColor() = color) 
 						then pieces := pieces + 1));
 		
-		return pieces < Stratego`PIECES_PER_PLAYER(index);
-	);
+		return pieces < Stratego`PIECES_PER_PLAYER(getIndex(type));
+	) pre type in set elems Stratego`TYPEOFPIECES;
 	
 	public pure movePossible : Position*Position*bool ==> bool
 	movePossible(origin,destination,range) == 
@@ -165,6 +164,27 @@ operations
 					
 			return true;
 	)pre validCoords(origin) and validCoords(destination);
+	
+	public pure checkGameOver : () ==> [Piece`PColor]
+	checkGameOver() == 
+	(
+		dcl flagBlue : [Piece] := nil;
+		dcl flagRed : [Piece] := nil;
+		for all cell in set rng board do 
+			if cell.getPiece() <> nil 
+				then 
+						if cell.getPiece().getType() = <FLAG> 
+							then
+								if cell.getPiece().getColor() = <BLUE>
+									then flagBlue := cell.getPiece()
+								else 
+									if cell.getPiece().getColor() = <RED> 
+										then flagRed := cell.getPiece();
+										
+		if flagBlue	<> nil and flagRed <> nil then return nil;			
+		if flagBlue	= nil and flagRed = nil then return nil;					
+		if flagBlue	= nil then return flagRed.getColor() else return flagBlue.getColor();
+	);
   
 functions
 -- TODO Define functiones here
@@ -172,13 +192,13 @@ functions
 	public getIndex : Piece`PType -> nat
 	getIndex(type) ==
 	(
-		[i | i in set inds Stratego`TYPES_OF_PIECES & Stratego`TYPES_OF_PIECES(i) = type](1)
-	);
+		[i | i in set inds Stratego`TYPEOFPIECES & Stratego`TYPEOFPIECES(i) = type](1)
+	) pre type in set elems Stratego`TYPEOFPIECES;
 	
 	public strongerPiece : Piece`PType*Piece`PType -> bool
 	strongerPiece(originType,destinationType) == (
 		 getIndex(originType) < getIndex(destinationType)
-	);
+	) pre originType in set elems Stratego`TYPEOFPIECES and destinationType in set elems Stratego`TYPEOFPIECES;
 	
 	public colorRegion : Position*Piece`PColor -> bool
 	colorRegion(position, color) ==

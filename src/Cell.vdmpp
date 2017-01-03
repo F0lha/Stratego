@@ -14,7 +14,7 @@ instance variables
 	inv occupied <=> piece <> nil;
 	inv water => piece = nil and occupied = false;
 operations
-	public Cell : nat * nat ==> Cell
+		public Cell : nat * nat ==> Cell
   	Cell(x,y) ==
   	(
   		position := mk_Position(x,y);
