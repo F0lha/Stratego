@@ -24,8 +24,6 @@ class BoardTest is subclass of TestCase
                         assertEqual(false,s.freeSpace(mk_Board`Position(3,4)));
                         
                         assertEqual(true,s.freeSpace(mk_Board`Position(9,9)));
-                        
-                        --TODO pecas
                 );
                 
                 private placePiece: () ==> ()
@@ -57,13 +55,20 @@ class BoardTest is subclass of TestCase
                 				s.placePiece(0,6,<SCOUT>,<RED>);
                 				s.placePiece(0,7,<SCOUT>,<RED>);
              
+             						--check freeSpace
+             						
+                        assertEqual(false,s.freeSpace(mk_Board`Position(0,0)));
+                        assertEqual(false,s.freeSpace(mk_Board`Position(0,2)));
                 );
                 
                 private testHasPiece: () ==> ()
                 testHasPiece() ==
                 (
-                	assertEqual(false,s.hasPiece(mk_Board`Position(0,0)));
-               
+                	assertEqual(true,s.hasPiece(mk_Board`Position(0,0)));
+                	assertEqual(true,s.hasPiece(mk_Board`Position(0,2)));
+                	
+                	--water
+                	assertEqual(false,s.hasPiece(mk_Board`Position(3,4)));
                 );
                 
                   private possibleMove: () ==> ()
@@ -181,8 +186,8 @@ class BoardTest is subclass of TestCase
                         dcl test : BoardTest := new BoardTest();
                         test.testValidCoords();
                         test.testFreeSpace();
-                        test.testHasPiece();
                         test.placePiece();
+                        test.testHasPiece();
                         test.possibleMove();
                         test.makeMove();
                         test.testInteraction();
