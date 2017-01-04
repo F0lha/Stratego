@@ -2,17 +2,16 @@ class Board
 
 -- Position is a pair of coordenates
 types
+		--Type of Position used for Coordinates
 		public Position:: x:nat  y:nat;
 values
--- TODO Define values here
+		--Max Size of Square Maps
 		private max_coord : nat = 9;
+		
 instance variables
 
 	private board : map Position to Cell := {|->};
--- TODO Define instance variables here
 operations
--- TODO Define operations here
-
 		public Board : () ==> Board
   	Board() ==
   	(
@@ -68,8 +67,11 @@ operations
   pre freeSpace(mk_Position(i,j)) and colorRegion(mk_Position(i,j),color) and limitPieces(type,color)
   post hasPiece(mk_Position(i,j));
   
+  public makePlay : nat*nat*nat*nat*Piece`PColor ==> bool
+  makePlay(xi,yi,xf,yf,color) == (
+  	return makeMove(mk_Position(xi,yi),mk_Position(xf,yf),color)
+  );
   
-  -- responsible for making a move
   public makeMove : Position*Position*Piece`PColor ==> bool
   makeMove(origin,destination,color) == 
   (
@@ -187,7 +189,6 @@ operations
 	);
   
 functions
--- TODO Define functiones here
 	--get index of type of piece
 	public getIndex : Piece`PType -> nat
 	getIndex(type) ==
@@ -203,8 +204,4 @@ functions
 	public colorRegion : Position*Piece`PColor -> bool
 	colorRegion(position, color) ==
 		if color = <BLUE> then position.y < 4 else position.y > 5;
-
-	
-traces
--- TODO Define Combinatorial Test Traces here
 end Board

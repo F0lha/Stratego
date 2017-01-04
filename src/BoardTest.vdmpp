@@ -1,29 +1,29 @@
 class BoardTest is subclass of TestCase
         instance variables
-                s : Board := new Board();
+                s : Stratego := new Stratego();
         operations          
         
         				-- Tests with valid Inputs
                 private testValidCoords: () ==> ()
                 testValidCoords() ==
                 (
-                        assertEqual(true,s.validCoords(mk_Board`Position(0,0)));
+                        assertEqual(true,s.getBoard().validCoords(mk_Board`Position(0,0)));
                         
-                        assertEqual(true,s.validCoords(mk_Board`Position(9,5)));
+                        assertEqual(true,s.getBoard().validCoords(mk_Board`Position(9,5)));
                         
-                        assertEqual(false,s.validCoords(mk_Board`Position(15,5)));
+                        assertEqual(false,s.getBoard().validCoords(mk_Board`Position(15,5)));
                 );
                 
                 private testFreeSpace: () ==> ()
                 testFreeSpace() ==
                 (
-                        assertEqual(true,s.freeSpace(mk_Board`Position(0,0)));
+                        assertEqual(true,s.getBoard().freeSpace(mk_Board`Position(0,0)));
                         
-                        assertEqual(false,s.freeSpace(mk_Board`Position(2,5)));
+                        assertEqual(false,s.getBoard().freeSpace(mk_Board`Position(2,5)));
                         
-                        assertEqual(false,s.freeSpace(mk_Board`Position(3,4)));
+                        assertEqual(false,s.getBoard().freeSpace(mk_Board`Position(3,4)));
                         
-                        assertEqual(true,s.freeSpace(mk_Board`Position(9,9)));
+                        assertEqual(true,s.getBoard().freeSpace(mk_Board`Position(9,9)));
                 );
                 
                 private placePiece: () ==> ()
@@ -57,34 +57,34 @@ class BoardTest is subclass of TestCase
              
              						--check freeSpace
              						
-                        assertEqual(false,s.freeSpace(mk_Board`Position(0,0)));
-                        assertEqual(false,s.freeSpace(mk_Board`Position(0,2)));
+                        assertEqual(false,s.getBoard().freeSpace(mk_Board`Position(0,0)));
+                        assertEqual(false,s.getBoard().freeSpace(mk_Board`Position(0,2)));
                 );
                 
                 private testHasPiece: () ==> ()
                 testHasPiece() ==
                 (
-                	assertEqual(true,s.hasPiece(mk_Board`Position(0,0)));
-                	assertEqual(true,s.hasPiece(mk_Board`Position(0,2)));
+                	assertEqual(true,s.getBoard().hasPiece(mk_Board`Position(0,0)));
+                	assertEqual(true,s.getBoard().hasPiece(mk_Board`Position(0,2)));
                 	
                 	--water
-                	assertEqual(false,s.hasPiece(mk_Board`Position(3,4)));
+                	assertEqual(false,s.getBoard().hasPiece(mk_Board`Position(3,4)));
                 );
                 
                   private possibleMove: () ==> ()
                 possibleMove() ==
                 (
-                		assertEqual(true,s.movePossible(mk_Board`Position(0,0),mk_Board`Position(0,1),false));
-                		assertEqual(true,s.movePossible(mk_Board`Position(1,3),mk_Board`Position(2,3),false));
-                		assertEqual(true,s.movePossible(mk_Board`Position(1,3),mk_Board`Position(2,3),true));
-                		assertEqual(false,s.movePossible(mk_Board`Position(50,0),mk_Board`Position(50,50),false));
-                		assertEqual(true,s.movePossible(mk_Board`Position(1,0),mk_Board`Position(9,0),true));
+                		assertEqual(true,s.getBoard().movePossible(mk_Board`Position(0,0),mk_Board`Position(0,1),false));
+                		assertEqual(true,s.getBoard().movePossible(mk_Board`Position(1,3),mk_Board`Position(2,3),false));
+                		assertEqual(true,s.getBoard().movePossible(mk_Board`Position(1,3),mk_Board`Position(2,3),true));
+                		assertEqual(false,s.getBoard().movePossible(mk_Board`Position(50,0),mk_Board`Position(50,50),false));
+                		assertEqual(true,s.getBoard().movePossible(mk_Board`Position(1,0),mk_Board`Position(9,0),true));
                 		
-                		assertEqual(true,s.movePossible(mk_Board`Position(1,0),mk_Board`Position(9,0),true));
+                		assertEqual(true,s.getBoard().movePossible(mk_Board`Position(1,0),mk_Board`Position(9,0),true));
                 		
                     -- with range
-                    assertEqual(false,s.movePossible(mk_Board`Position(0,6),mk_Board`Position(0,9),true));
-                    assertEqual(false,s.movePossible(mk_Board`Position(0,6),mk_Board`Position(2,6),true));
+                    assertEqual(false,s.getBoard().movePossible(mk_Board`Position(0,6),mk_Board`Position(0,9),true));
+                    assertEqual(false,s.getBoard().movePossible(mk_Board`Position(0,6),mk_Board`Position(2,6),true));
                     
                 );
                 
@@ -92,15 +92,15 @@ class BoardTest is subclass of TestCase
                  makeMove() ==
                 (
                 		
-                		assertEqual(true,s.makeMove(mk_Board`Position(0,0),mk_Board`Position(1,0),<BLUE>));
-                		assertEqual(false,s.makeMove(mk_Board`Position(0,6),mk_Board`Position(0,7),<RED>));
-                		assertEqual(false,s.makeMove(mk_Board`Position(6,1),mk_Board`Position(6,2),<BLUE>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(0,0),mk_Board`Position(1,0),<BLUE>));
+                		assertEqual(false,s.getBoard().makeMove(mk_Board`Position(0,6),mk_Board`Position(0,7),<RED>));
+                		assertEqual(false,s.getBoard().makeMove(mk_Board`Position(6,1),mk_Board`Position(6,2),<BLUE>));
                 		
                 		
                 		--test scout range
-                		assertEqual(true,s.makeMove(mk_Board`Position(4,6),mk_Board`Position(4,3),<RED>));
-                		assertEqual(false,s.hasPiece(mk_Board`Position(4,6)));
-                		assertEqual(false,s.hasPiece(mk_Board`Position(4,3)));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,6),mk_Board`Position(4,3),<RED>));
+                		assertEqual(false,s.getBoard().hasPiece(mk_Board`Position(4,6)));
+                		assertEqual(false,s.getBoard().hasPiece(mk_Board`Position(4,3)));
                     
                 );
                 
@@ -112,11 +112,11 @@ class BoardTest is subclass of TestCase
                 		s.placePiece(9,3,<MAJOR>,<BLUE>);
                 		
                 		
-                		assertEqual(true,s.makeMove(mk_Board`Position(9,6),mk_Board`Position(9,5),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(9,5),mk_Board`Position(9,4),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(9,4),mk_Board`Position(9,3),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(9,6),mk_Board`Position(9,5),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(9,5),mk_Board`Position(9,4),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(9,4),mk_Board`Position(9,3),<RED>));
                 		
-                		assertEqual(<BLUE>, s.getPiece(mk_Board`Position(9,3)).getColor());
+                		assertEqual(<BLUE>, s.getBoard().getPiece(mk_Board`Position(9,3)).getColor());
                 		
                 		--test another interaction 
                 		
@@ -124,20 +124,20 @@ class BoardTest is subclass of TestCase
                 		s.placePiece(8,3,<LIEUTENANT>,<BLUE>);
                 		
                 		
-                		assertEqual(true,s.makeMove(mk_Board`Position(8,6),mk_Board`Position(8,5),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(8,5),mk_Board`Position(8,4),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(8,4),mk_Board`Position(8,3),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(8,6),mk_Board`Position(8,5),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(8,5),mk_Board`Position(8,4),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(8,4),mk_Board`Position(8,3),<RED>));
                 		
-                		assertEqual(<RED>, s.getPiece(mk_Board`Position(8,3)).getColor());
+                		assertEqual(<RED>, s.getBoard().getPiece(mk_Board`Position(8,3)).getColor());
                 		
                 		--test miner
                 		
                 		
-                		assertEqual(true,s.makeMove(mk_Board`Position(1,6),mk_Board`Position(1,5),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(1,5),mk_Board`Position(1,4),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(1,4),mk_Board`Position(1,3),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(1,6),mk_Board`Position(1,5),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(1,5),mk_Board`Position(1,4),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(1,4),mk_Board`Position(1,3),<RED>));
                 		
-                		assertEqual(<RED>, s.getPiece(mk_Board`Position(1,3)).getColor());
+                		assertEqual(<RED>, s.getBoard().getPiece(mk_Board`Position(1,3)).getColor());
                 		
                 		--test spy
                 		
@@ -146,17 +146,49 @@ class BoardTest is subclass of TestCase
                 		
                 		--impossible move 
                 		
-                		assertEqual(false,s.makeMove(mk_Board`Position(4,6),mk_Board`Position(4,8),<RED>));
+                		assertEqual(false,s.getBoard().makeMove(mk_Board`Position(4,6),mk_Board`Position(4,8),<RED>));
                 		
-                		assertEqual(true,s.makeMove(mk_Board`Position(4,6),mk_Board`Position(4,5),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(4,5),mk_Board`Position(4,4),<RED>));
-                		assertEqual(true,s.makeMove(mk_Board`Position(4,4),mk_Board`Position(4,3),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,6),mk_Board`Position(4,5),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,5),mk_Board`Position(4,4),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,4),mk_Board`Position(4,3),<RED>));
                 		
-                		assertEqual(<RED>, s.getPiece(mk_Board`Position(4,3)).getColor());
+                		assertEqual(<RED>, s.getBoard().getPiece(mk_Board`Position(4,3)).getColor());
                 );
                 
                 private checkIfIsWater : () ==> ()
                 checkIfIsWater() == s.placePiece(4,5,<BOMB>,<BLUE>);
+                
+                private testIfGameOver : () ==> ()
+                testIfGameOver() == (
+                		--game not started
+                		assertEqual(nil,s.getBoard().checkGameOver());
+                		s.placePiece(3,7,<FLAG>,<RED>);
+                		--red won
+                		assertEqual(<RED>,s.getBoard().checkGameOver());
+                		s.placePiece(3,3,<FLAG>,<BLUE>);
+                		--during game
+                		assertEqual(nil,s.getBoard().checkGameOver());
+                		s.getBoard().getCell(mk_Board`Position(3,7)).removePiece();
+                		--blue won
+                		assertEqual(<BLUE>,s.getBoard().checkGameOver());
+                );
+                
+                private StrategoTurns : () ==> ()
+                StrategoTurns() == (
+                	--Blue Turn
+                	assertEqual(0,s.getTurn());
+                	--Blue piece
+                	assertEqual(true,s.makePlay(6,1,5,1));
+                	
+                	--Now red Turn
+                	assertEqual(1,s.getTurn());
+                	
+                	--Blue Piece, must fails precondition
+                	--s.makePlay(5,1,6,1);
+                	--Red Piece, Play made
+                	assertEqual(true,s.makePlay(1,3,1,4));
+                	assertEqual(0,s.getTurn());
+                );
                 
                 
                 -- Invalid Inputs, Pre Condition Failing, one at a time
@@ -191,5 +223,7 @@ class BoardTest is subclass of TestCase
                         test.possibleMove();
                         test.makeMove();
                         test.testInteraction();
+                        test.testIfGameOver();
+                        test.StrategoTurns();
                 );
 end BoardTest

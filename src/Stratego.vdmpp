@@ -1,27 +1,21 @@
 class Stratego
-types
--- TODO Define types here
 		
 values
-		-- TODO Define values here
 		public PIECES_PER_PLAYER : seq of nat1 = [6,1,1,2,3,4,4,4,5,8,1,1];
 		public TYPEOFPIECES : seq of Piece`PType = [ <BOMB> , <MARSHALL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
 instance variables
--- TODO Define instance variables here
 		private board : Board;
 		private turn : nat := 0;
 		
-		-- Invariables
+		-- Invariants
 		inv turn = 1 or turn = 0;
 operations
--- TODO Define operations here
-
 		public Stratego : () ==> Stratego
 		Stratego() ==
 		(
 			board := new Board();
 		)
-		post self.validTurn();
+		post validTurn();
 		
 		public pure getTurn : () ==> nat
 		getTurn() == return turn;
@@ -31,14 +25,21 @@ operations
 		(
 		if turn = 0 then turn := 1 else turn := 0;
 		)
-		pre self.validTurn()
-		post self.validTurn();
+		pre validTurn()
+		post validTurn();
+		
+		public pure getBoard : () ==> Board
+		getBoard() == return board;
+		
+		public makePlay : nat*nat*nat*nat ==> bool
+		makePlay(xi,yi,xf,yf) == (
+			if turn = 0 then if board.makePlay(xi,yi,xf,yf,<BLUE>) then (changeTurn(); return true) else return false
+			else if board.makePlay(xi,yi,xf,yf,<RED>) then (changeTurn(); return true) else return false;
+		);
+		
+		public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
+		placePiece(i,j,type,color) == return board.placePiece(i,j,type,color);
 		
 		public pure validTurn : () ==> bool
 		validTurn() == return turn = 0 or turn = 1;
-		
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Stratego

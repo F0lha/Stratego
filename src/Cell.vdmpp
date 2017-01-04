@@ -1,18 +1,15 @@
 class Cell
 types
--- TODO Define types here
 	public Position :: x:nat y:nat;
-values
--- TODO Define values here
 instance variables
 	private position : Position;
 	private piece :  [Piece] := nil;
 	private water : bool := false;
 	private occupied : bool := false;
--- TODO Define instance variables here
-
-	inv occupied <=> piece <> nil;
-	inv water => piece = nil and occupied = false;
+	
+	--Invariants
+	inv occupied= true <=> piece <> nil;
+	inv water = true => piece = nil and occupied = false;
 operations
 		public Cell : nat * nat ==> Cell
   	Cell(x,y) ==
@@ -54,10 +51,4 @@ operations
 	(
 		return (pos.x = 2 or pos.x = 3 or pos.x = 6 or pos.x = 7) and (pos.y = 4 or pos.y = 5);
 	);
-	
--- TODO Define operations here
-functions
--- TODO Define functiones here
-traces
--- TODO Define Combinatorial Test Traces here
 end Cell
