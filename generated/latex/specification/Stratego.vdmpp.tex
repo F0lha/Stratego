@@ -1,0 +1,79 @@
+\begin{vdmpp}[breaklines=true]
+class Stratego
+  
+values
+  public PIECES_PER_PLAYER : seq of nat1 = [6,1,1,2,3,4,4,4,5,8,1,1];
+  public TYPEOFPIECES : seq of Piece`PType = [ <BOMB> , <MARSHALL> , <GENERAL> , <COLONEL> , <MAJOR> , <CAPTAIN> , <LIEUTENANT> , <SERGEANT> , <MINER> , <SCOUT> , <SPY> , <FLAG>];
+instance variables
+  private board : Board;
+  private turn : nat := 0;
+  
+  -- Turn is either Red or Blue
+  inv turn = 1 or turn = 0;
+operations
+(*@
+\label{Stratego:13}
+@*)
+  public Stratego : () ==> Stratego
+  Stratego() ==
+  (
+   board := new Board();
+  )
+  post validTurn();
+  
+(*@
+\label{getTurn:20}
+@*)
+  public pure getTurn : () ==> nat
+  getTurn() == return turn;
+  
+(*@
+\label{changeTurn:23}
+@*)
+  public changeTurn : () ==> ()
+  changeTurn() == 
+  (
+  if turn = 0 then turn := 1 
+   else turn := 0;
+  )
+  pre validTurn()
+  post validTurn();
+  
+(*@
+\label{getBoard:32}
+@*)
+  public pure getBoard : () ==> Board
+  getBoard() == return board;
+  
+(*@
+\label{makePlay:35}
+@*)
+  public makePlay : nat*nat*nat*nat ==> bool
+  makePlay(xi,yi,xf,yf) == (
+   if turn = 0 then if board.makePlay(xi,yi,xf,yf,<BLUE>) then 
+   (
+    changeTurn(); 
+    return true
+   ) 
+    else return false
+   else if board.makePlay(xi,yi,xf,yf,<RED>) then 
+   (
+    changeTurn();
+    return true
+   ) 
+    else return false;
+  );
+  
+(*@
+\label{placePiece:51}
+@*)
+  public placePiece : nat*nat*Piece`PType*Piece`PColor ==> ()
+  placePiece(i,j,type,color) == return board.placePiece(i,j,type,color);
+  
+(*@
+\label{validTurn:54}
+@*)
+  public pure validTurn : () ==> bool
+  validTurn() == return turn = 0 or turn = 1;
+end Stratego
+\end{vdmpp}

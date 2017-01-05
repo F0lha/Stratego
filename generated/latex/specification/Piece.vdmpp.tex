@@ -1,0 +1,101 @@
+\begin{vdmpp}[breaklines=true]
+class Piece
+types
+-- TODO Define types here
+   public PType = <BOMB> | <MARSHALL> | <GENERAL> | <COLONEL> | <MAJOR> | <CAPTAIN> | <LIEUTENANT> | <SERGEANT> | <MINER> | <SCOUT> | <SPY> | <FLAG>;
+  public PColor = <RED> | <BLUE>;
+instance variables
+  private PieceType : PType;
+  private PieceColor : PColor;
+  
+  private onBoard : bool := false;
+  private cannotMove : bool;
+  private unlimitedRange : bool;
+     
+   private lastPosition : [Board`Position] := nil;
+   private movesRepeated : nat := 0;
+   
+   inv unlimitedRange => not cannotMove;
+   inv cannotMove => lastPosition = nil and movesRepeated = 0;
+   inv movesRepeated <> 0 => lastPosition <> nil;
+operations
+(*@
+\label{Piece:21}
+@*)
+  public Piece : PType*PColor ==> Piece
+    Piece(type,color) ==
+    (
+     PieceType := type;
+     PieceColor := color;
+     
+     cannotMove := PieceType = <BOMB> or PieceType = <FLAG>;
+     unlimitedRange := PieceType = <SCOUT>;
+     
+     self.placePiece();
+    )
+    pre type <> nil and color <> nil;
+   
+(*@
+\label{placePiece:34}
+@*)
+    public placePiece : () ==> ()
+    placePiece() ==
+    (
+     onBoard := true;
+    )
+    post self.onBoard = true;
+    
+    --Updates the move in order with the previous
+(*@
+\label{newPosition:42}
+@*)
+    public newPosition : Board`Position*Board`Position  ==> ()
+    newPosition(origin,destination) == 
+    (
+     if destination <> lastPosition then
+     (
+       movesRepeated := 0;
+       lastPosition := origin;
+     )
+     else 
+     (
+      movesRepeated := movesRepeated + 1;
+      lastPosition := origin;
+     )
+    );
+    
+    --Checks if the new move can be made
+(*@
+\label{canMakeMove:58}
+@*)
+    public canMakeMove : Board`Position ==> bool
+    canMakeMove(newPos) == 
+    (
+     return newPos <> lastPosition or movesRepeated < 3;
+    );
+    
+(*@
+\label{getType:64}
+@*)
+    public pure getType : () ==> PType
+    getType() == return PieceType;
+    
+(*@
+\label{getColor:67}
+@*)
+    public pure getColor : () ==> PColor
+    getColor() == return PieceColor;
+    
+(*@
+\label{canMove:70}
+@*)
+    public pure canMove : () ==> bool
+    canMove() == return not cannotMove;
+    
+(*@
+\label{hasUnlimitedRange:73}
+@*)
+    public pure hasUnlimitedRange : () ==> bool
+    hasUnlimitedRange() == return unlimitedRange;
+end Piece
+\end{vdmpp}

@@ -1,0 +1,74 @@
+\begin{vdmpp}[breaklines=true]
+class Cell
+types
+ public Position :: x:nat y:nat;
+instance variables
+ private position : Position;
+ private piece :  [Piece] := nil;
+ private water : bool := false;
+ private occupied : bool := false;
+ 
+ --Invariants
+ inv occupied= true <=> piece <> nil;
+ inv water = true => piece = nil and occupied = false;
+operations
+(*@
+\label{Cell:14}
+@*)
+  public Cell : nat * nat ==> Cell
+   Cell(x,y) ==
+   (
+    position := mk_Position(x,y);
+    water := isWater(position);
+  );
+ 
+(*@
+\label{setPiece:21}
+@*)
+ public setPiece : Piece ==> ()
+ setPiece(pie) == 
+ (
+  atomic(
+   piece := pie;
+   occupied := true;
+   )
+ )
+ pre occupied = false and piece = nil and water = false
+ post occupied = true and piece <> nil;
+ 
+(*@
+\label{removePiece:32}
+@*)
+ public removePiece : () ==> ()
+ removePiece() == 
+ (
+  atomic(
+   piece := nil;
+   occupied := false;
+  )
+ )
+ pre occupied = true and piece <> nil and water = false
+ post occupied = false and piece = nil;
+ 
+(*@
+\label{isOccupied:43}
+@*)
+ public pure isOccupied : () ==> bool
+ isOccupied() == return occupied or water;
+ 
+(*@
+\label{getPiece:46}
+@*)
+ public pure getPiece : () ==> [Piece]
+ getPiece() == return piece;
+  
+(*@
+\label{isWater:49}
+@*)
+ public pure isWater : Position ==> bool
+ isWater(pos) ==
+ (
+  return (pos.x = 2 or pos.x = 3 or pos.x = 6 or pos.x = 7) and (pos.y = 4 or pos.y = 5);
+ );
+end Cell
+\end{vdmpp}
