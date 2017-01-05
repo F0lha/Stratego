@@ -10,6 +10,13 @@ instance variables
 		private onBoard : bool := false;
 		private cannotMove : bool;
 		private unlimitedRange : bool;
+  			
+  	private lastPosition : [Board`Position] := nil;
+  	private movesRepeated : nat := 0;
+  	
+  	inv unlimitedRange => not cannotMove;
+  	inv cannotMove => lastPosition = nil and movesRepeated = 0;
+  	inv movesRepeated <> 0 => lastPosition <> nil;
 operations
 		public Piece : PType*PColor ==> Piece
   		Piece(type,color) ==
@@ -24,12 +31,35 @@ operations
   		)
   		pre type <> nil and color <> nil;
   	
-  	public placePiece : () ==> ()
+  		public placePiece : () ==> ()
   		placePiece() ==
   		(
   			onBoard := true;
   		)
   		post self.onBoard = true;
+  		
+  		--Updates the move in order with the previous
+  		public newPosition : Board`Position*Board`Position  ==> ()
+  		newPosition(origin,destination) == 
+  		(
+  			if destination <> lastPosition then
+  			(
+  					movesRepeated := 0;
+  					lastPosition := origin;
+  			)
+  			else 
+  			(
+  				movesRepeated := movesRepeated + 1;
+  				lastPosition := origin;
+  			)
+  		);
+  		
+  		--Checks if the new move can be made
+  		public canMakeMove : Board`Position ==> bool
+  		canMakeMove(newPos) == 
+  		(
+  			return newPos <> lastPosition or movesRepeated < 3;
+  		);
   		
   		public pure getType : () ==> PType
   		getType() == return PieceType;

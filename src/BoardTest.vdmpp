@@ -155,9 +155,6 @@ class BoardTest is subclass of TestCase
                 		assertEqual(<RED>, s.getBoard().getPiece(mk_Board`Position(4,3)).getColor());
                 );
                 
-                private checkIfIsWater : () ==> ()
-                checkIfIsWater() == s.placePiece(4,5,<BOMB>,<BLUE>);
-                
                 private testIfGameOver : () ==> ()
                 testIfGameOver() == (
                 		--game not started
@@ -175,6 +172,9 @@ class BoardTest is subclass of TestCase
                 
                 private StrategoTurns : () ==> ()
                 StrategoTurns() == (
+                	--Play returning false
+                	assertEqual(false,s.makePlay(6,1,6,2));
+                	
                 	--Blue Turn
                 	assertEqual(0,s.getTurn());
                 	--Blue piece
@@ -183,12 +183,28 @@ class BoardTest is subclass of TestCase
                 	--Now red Turn
                 	assertEqual(1,s.getTurn());
                 	
+                	--Play returning false
+                	assertEqual(false,s.makePlay(1,3,3,3));
+                	
                 	--Blue Piece, must fails precondition
                 	--s.makePlay(5,1,6,1);
                 	--Red Piece, Play made
                 	assertEqual(true,s.makePlay(1,3,1,4));
                 	assertEqual(0,s.getTurn());
                 );
+                
+                private repeatPlays : () ==> ()
+                repeatPlays() == (
+                
+                		
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,3),mk_Board`Position(4,4),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,4),mk_Board`Position(4,3),<RED>));
+                		assertEqual(true,s.getBoard().makeMove(mk_Board`Position(4,3),mk_Board`Position(4,4),<RED>));
+                		
+                		--After 3 plays to the same position it returnes false
+                		assertEqual(false,s.getBoard().makeMove(mk_Board`Position(4,4),mk_Board`Position(4,3),<RED>));
+                );
+                
                 
                 
                 -- Invalid Inputs, Pre Condition Failing, one at a time
@@ -216,14 +232,23 @@ class BoardTest is subclass of TestCase
                 main() ==
                 (
                         dcl test : BoardTest := new BoardTest();
+                        
+                        --Test Spaces
                         test.testValidCoords();
                         test.testFreeSpace();
+                        
+                        --Test Pieces
                         test.placePiece();
                         test.testHasPiece();
+                        
+                        --Tests Moves
                         test.possibleMove();
                         test.makeMove();
                         test.testInteraction();
+                        
+                        --Test Game
                         test.testIfGameOver();
                         test.StrategoTurns();
+                        test.repeatPlays();
                 );
 end BoardTest
